@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Layout from '../layouts/Layout.astro';
+import OffreCard from '../components/OffreCard.astro';
 const offres = [
     {
         "adresse": "55 rue des lilas 33000 Bordeaux",
@@ -11,7 +12,7 @@ const offres = [
         "nomMaison": "maison du sud",
         "prix": 10000000,
         "surface": 150,
-        "imgUrl": "maison_"
+        "imgUrl": "./images/maison_du_sud.jpg"
     },
     {
         "adresse": "31 rue de la vielle lutte 70000 Vesoul",
@@ -22,7 +23,7 @@ const offres = [
         "nomMaison": "maison Bambou",
         "prix": 200000,
         "surface": 100,
-        "imgUrl": "image2.png"
+        "imgUrl": "./images/maison_bambou.jpg"
     },
     {
         "adresse": "18 rue de la Schliffe 25200 MontbéliardN",
@@ -33,7 +34,7 @@ const offres = [
         "nomMaison": "maison Laura",
         "prix": 12000,
         "surface": 60,
-        "imgUrl": "image3.png"
+        "imgUrl": "./images/maison_laura.jpg"
     },
 	{
         "adresse": "4 place Tharradin BP 71427 25211 Montbéliard cedex",
@@ -44,31 +45,59 @@ const offres = [
         "nomMaison": "maison mmi",
         "prix": 500000,
         "surface": 500000,
-        "imgUrl": "image3.png"
+        "imgUrl": "./images/maison_mmi.JPG"
     },
 	{
         "adresse": "23 rue des petits pois 77000 Melun ",
-        "favori": true,
+        "favori": false,
         "id": "47lp6llen0kk9pt",
         "nbChambres": 7,
         "nbSdb": 9,
         "nomMaison": "maison blanche",
         "prix": 800000,
         "surface": 350,
-        "imgUrl": "image3.png"
+        "imgUrl": "./images/image_maison_blanche.jpg"
     }
 ]	
 ---
 <Layout titre="Les offres">
   <h1>Nos offres</h1>
 
-  <ul>
+  <div>
     {
       offres.map((offre) => (
-        <li>
-          {offre.nomMaison}
-        </li>
+         <div class="offre" data-favori={offre.favori}>
+            <!-- Contenu de l'offre -->
+            <OffreCard offre={offre} />
+        </div>
+
       ))
     }
-  </ul>
+
+<button id="favori-button" class="bg-slate-600 rounded-lg text-white p-2">Afficher les favoris</button>
+
+
+<script>
+    //@ts-nocheck
+    const button = document.getElementById('favori-button');
+    let showOnlyFavorites = false;
+
+    button?.addEventListener('click', () => {
+        showOnlyFavorites = !showOnlyFavorites;
+        const offres = document.querySelectorAll('.offre');
+
+        offres.forEach(offre => {
+            const isFavori = offre.dataset.favori === 'true';
+            console.log(isFavori);
+            if (showOnlyFavorites) {
+                offre.style.display = isFavori ? 'block' : 'none';
+                button.textContent = 'Afficher tout';
+            } else {
+                offre.style.display = 'block';
+                button.textContent = 'Afficher les favoris';
+            }
+        });
+    });
+</script>
+</div>
 </Layout>
