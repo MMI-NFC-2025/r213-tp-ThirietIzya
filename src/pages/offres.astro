@@ -1,7 +1,74 @@
 ---
 import '../styles/global.css';
 import Layout from '../layouts/Layout.astro';
+const offres = [
+    {
+        "adresse": "55 rue des lilas 33000 Bordeaux",
+        "favori": false,
+        "id": "3apf9i2uyoyinug",
+        "nbChambres": 8,
+        "nbSdb": 10,
+        "nomMaison": "maison du sud",
+        "prix": 10000000,
+        "surface": 150,
+        "imgUrl": "maison_"
+    },
+    {
+        "adresse": "31 rue de la vielle lutte 70000 Vesoul",
+        "favori": true,
+        "id": "9btgdg78b59u6jn",
+        "nbChambres": 3,
+        "nbSdb": 3,
+        "nomMaison": "maison Bambou",
+        "prix": 200000,
+        "surface": 100,
+        "imgUrl": "image2.png"
+    },
+    {
+        "adresse": "18 rue de la Schliffe 25200 MontbéliardN",
+        "favori": false,
+        "id": "rlt7o9vdv6n78h4",
+        "nbChambres": 2,
+        "nbSdb": 1,
+        "nomMaison": "maison Laura",
+        "prix": 12000,
+        "surface": 60,
+        "imgUrl": "image3.png"
+    },
+	{
+        "adresse": "4 place Tharradin BP 71427 25211 Montbéliard cedex",
+        "favori": true,
+        "id": "88y2w31mbown872",
+        "nbChambres": 7,
+        "nbSdb": 10,
+        "nomMaison": "maison mmi",
+        "prix": 500000,
+        "surface": 500000,
+        "imgUrl": "image3.png"
+    },
+	{
+        "adresse": "23 rue des petits pois 77000 Melun ",
+        "favori": true,
+        "id": "47lp6llen0kk9pt",
+        "nbChambres": 7,
+        "nbSdb": 9,
+        "nomMaison": "maison blanche",
+        "prix": 800000,
+        "surface": 350,
+        "imgUrl": "image3.png"
+    }
+]	
 ---
 <Layout titre="Les offres">
-	<h1>Nos offres</h1>
+  <h1>Nos offres</h1>
+
+  <ul>
+    {
+      offres.map((offre) => (
+        <li>
+          {offre.nomMaison}
+        </li>
+      ))
+    }
+  </ul>
 </Layout>
