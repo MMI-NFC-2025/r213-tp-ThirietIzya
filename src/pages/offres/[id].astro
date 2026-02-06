@@ -1,0 +1,20 @@
+---
+import { getOffres } from '../../js/backend.mjs';
+import Layout from '../../layouts/Layout.astro';
+import '../../styles/global.css';
+
+const { id } = Astro.params;
+const offres = await getOffres(id);
+const offre = offres.find((o) => o.id === id);
+
+---
+
+    <Layout titre={offre?.nom_maison}>
+    <h2>{offre?.nom_maison}</h2>
+        <li>{offre?.adresse}</li>
+        <li> {offre?.NbChambres}</li>
+        <li> {offre?.NbSdb}</li>
+        <li> {offre?.surface}</li>
+        <li> {offre?.prix}</li>
+    </ul>
+</Layout>
