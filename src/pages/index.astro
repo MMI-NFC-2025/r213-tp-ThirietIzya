@@ -2,6 +2,11 @@
 import '../styles/global.css';
 import Layout from '../layouts/Layout.astro';
 ---
+<form action="/offres" method="POST">
+    <input type="number" name="minPrix" placeholder="Prix minimum" />
+    <input type="number" name="maxPrix" placeholder="Prix maximum" />
+    <input type="submit" value="Filtrer par prix" />
+</form>
 <Layout titre="Accueil">
 	<h1>Accueil</h1>
 </Layout>
