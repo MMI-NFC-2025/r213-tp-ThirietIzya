@@ -55,5 +55,10 @@ const offres = await getOffres();
         });
     });
 </script>
+<form action="/offres" method="POST">
+    <input type="number" name="minPrix" placeholder="Prix minimum" />
+    <input type="number" name="maxPrix" placeholder="Prix maximum" />
+    <input type="submit" value="Filtrer par prix" />
+</form>
 </div>
 </Layout>
