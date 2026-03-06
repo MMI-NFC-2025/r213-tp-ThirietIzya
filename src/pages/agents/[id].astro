@@ -1,0 +1,66 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import OffreCard from "../../components/OffreCard.astro";
+import { getAgent, getOffresByAgent } from "../../js/backend.mjs";
+
+const { id } = Astro.params;
+const agent = await getAgent(id);
+
+if (!agent) {
+    return Astro.redirect("/agents");
+}
+
+const offres = await getOffresByAgent(id);
+---
+
+<Layout titre={`Offres de ${agent.nom} ${agent.prenom}`}>
+    <div class="container mx-auto px-4 py-8">
+        <a
+            href="/agents"
+            class="text-blue-600 hover:underline mb-4 inline-block"
+        >
+            &larr; Retour aux agents
+        </a>
+
+        <div class="bg-white shadow-md rounded-lg p-6 mb-8">
+            <h1 class="text-3xl font-bold mb-4">
+                {agent.nom}
+                {agent.prenom}
+            </h1>
+            <div class="text-gray-700">
+                {
+                    agent.email && (
+                        <p class="mb-2">
+                            <strong>Email :</strong> {agent.email}
+                        </p>
+                    )
+                }
+                {
+                    agent.telephone && (
+                        <p class="mb-2">
+                            <strong>Téléphone :</strong> {agent.telephone}
+                        </p>
+                    )
+                }
+            </div>
+        </div>
+
+        <h2 class="text-2xl font-bold mb-6">
+            Offres de cet agent ({offres.length})
+        </h2>
+
+        {
+            offres.length === 0 ? (
+                <p class="text-gray-600">
+                    Cet agent n'a aucune offre pour le moment.
+                </p>
+            ) : (
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {offres.map((offre) => (
+                        <OffreCard offre={offre} />
+                    ))}
+                </div>
+            )
+        }
+    </div>
+</Layout>

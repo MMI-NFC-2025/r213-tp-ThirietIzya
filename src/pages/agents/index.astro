@@ -1,0 +1,248 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getAgents } from "../../js/backend.mjs";
+import type { RecordModel } from 'pocketbase';
+
+interface Agent extends RecordModel {
+    nom: string;
+    prenom: string;
+    email?: string;
+    telephone?: string;
+}
+
+const agents = await getAgents() as unknown as Agent[];
+---
+
+<Layout titre="Agents">
+    <div class="container mx-auto px-4 py-8">
+        <a href="/" class="back-link"> &larr; Retour à l'accueil </a>
+
+        <h1 class="page-title">Liste des agents</h1>
+
+        {
+            agents.length === 0 ? (
+                <p class="text-gray-600">Aucun agent trouvé.</p>
+            ) : (
+                <div class="agents-grid">
+                    {agents.map((agent) => (
+                        <a href={`/agents/${agent.id}`} class="agent-card">
+                            <div class="agent-avatar">
+                                {agent.nom.charAt(0)}
+                                {agent.prenom.charAt(0)}
+                            </div>
+                            <h2 class="agent-name">
+                                {agent.nom} {agent.prenom}
+                            </h2>
+                            <div class="agent-info">
+                                {agent.email && (
+                                    <p class="agent-detail">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                            <polyline points="22,6 12,13 2,6" />
+                                        </svg>
+                                        {agent.email}
+                                    </p>
+                                )}
+                                {agent.telephone && (
+                                    <p class="agent-detail">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                        </svg>
+                                        {agent.telephone}
+                                    </p>
+                                )}
+                            </div>
+                            <div class="agent-cta">
+                                Voir les offres
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </div>
+                        </a>
+                    ))}
+                </div>
+            )
+        }
+    </div>
+</Layout>
+
+<style>
+    .back-link {
+        display: inline-block;
+        color: #3b82f6;
+        text-decoration: none;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #2563eb;
+        transform: translateX(-4px);
+    }
+
+    .page-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .agents-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+
+    .agent-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: white;
+        border-radius: 16px;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .agent-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .agent-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 28px rgba(59, 130, 246, 0.25);
+        border-color: #3b82f6;
+    }
+
+    .agent-card:hover::before {
+        transform: scaleX(1);
+    }
+
+    .agent-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .agent-card:hover .agent-avatar {
+        transform: scale(1.1);
+        box-shadow: 0 6px 24px rgba(59, 130, 246, 0.4);
+    }
+
+    .agent-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+
+    .agent-info {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .agent-detail {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+        font-size: 0.875rem;
+        padding: 0.5rem;
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+
+    .agent-detail svg {
+        flex-shrink: 0;
+        color: #3b82f6;
+    }
+
+    .agent-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+        color: white;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .agent-card:hover .agent-cta {
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 2rem;
+        }
+
+        .agents-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
